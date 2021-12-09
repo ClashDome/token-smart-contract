@@ -101,6 +101,17 @@ namespace eosio {
          [[eosio::action]]
          void close( const name& owner, const symbol& symbol );
 
+        /**
+          * This action burns tokens
+          *
+          * @param quantity - the quantity of token to be burnt.
+          * @param memo - contains information related to the token burning.
+          *
+          */
+
+        [[eosio::action]]
+         void burn( const asset& quantity, const string& memo );
+
          static asset get_supply( const name& token_contract_account, const symbol_code& sym_code )
          {
             stats statstable( token_contract_account, sym_code.raw() );

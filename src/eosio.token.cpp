@@ -153,4 +153,29 @@ namespace eosio {
         acnts.erase( it );
     }
 
+    void token::burn( const asset& quantity, const string& memo ) {
+
+        auto sym = quantity.symbol;
+        check( sym.is_valid(), "invalid symbol name" );
+        check( memo.size() <= 256, "memo has more than 256 bytes" );
+
+        stats statstable( get_self(), sym.code().raw() );
+        auto existing = statstable.find( sym.code().raw() );
+        check( existing != statstable.end(), "token with symbol does not exist" );
+        const auto& st = *existing;
+
+        require_auth( st.issuer );
+        check( quantity.is_valid(), "invalid quantity" );
+        check( quantity.amount > 0, "must burn positive quantity" );
+
+        check( quantity.symbol == st.supply.symbol, "symbol precision mismatch" );
+
+        statstable.modify( st, same_payer, [&]( auto& s ) {
+            s.supply -= quantity;
+            s.max_supply -= quantity; // this line is added compared to `token::retire`
+        });
+
+        sub_balance( st.issuer, quantity );
+    }
+
 } /// namespace eosio

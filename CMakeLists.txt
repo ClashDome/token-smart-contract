@@ -7,7 +7,7 @@ endif()
 ExternalProject_Add(
    clashdometkn_project
    SOURCE_DIR ${CMAKE_SOURCE_DIR}/src
-   BINARY_DIR ${CMAKE_BINARY_DIR}/   clashdometkn
+   BINARY_DIR ${CMAKE_BINARY_DIR}/   eosio.token
 
    CMAKE_ARGS -DCMAKE_TOOLCHAIN_FILE=${EOSIO_CDT_ROOT}/lib/cmake/eosio.cdt/EosioWasmToolchain.cmake
    UPDATE_COMMAND ""
