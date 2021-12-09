@@ -1,6 +1,17 @@
 # clashdometkn
 ClashDome tokens: LUDIO, CDCARBZ and CDJIGO
 
+# Build
+
+```cd <smart_contract_directory>
+git clone
+go to directory
+md build
+cd build
+cmake ..
+make
+```
+
 # Update contract
 
 While testing in testnet:
