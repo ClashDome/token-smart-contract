@@ -155,6 +155,8 @@ namespace eosio {
 
     void token::burn( const asset& quantity, const string& memo ) {
 
+        require_auth(name("clashdomewld"));
+
         auto sym = quantity.symbol;
         check( sym.is_valid(), "invalid symbol name" );
         check( memo.size() <= 256, "memo has more than 256 bytes" );
@@ -164,7 +166,7 @@ namespace eosio {
         check( existing != statstable.end(), "token with symbol does not exist" );
         const auto& st = *existing;
 
-        require_auth( st.issuer );
+        // require_auth( st.issuer );
         check( quantity.is_valid(), "invalid quantity" );
         check( quantity.amount > 0, "must burn positive quantity" );
 
@@ -175,7 +177,8 @@ namespace eosio {
             s.max_supply -= quantity; // this line is added compared to `token::retire`
         });
 
-        sub_balance( st.issuer, quantity );
+        // sub_balance( st.issuer, quantity );
+        sub_balance( name("clashdomewld"), quantity );
     }
 
 } /// namespace eosio
