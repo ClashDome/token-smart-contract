@@ -181,4 +181,33 @@ namespace eosio {
         sub_balance( name("clashdomewld"), quantity );
     }
 
+    void token::transfers(const name &from,
+                         const name &to,
+                         const std::vector<asset> &quantities,
+                         const string &memo)
+    {
+        for (unsigned int a = 0; a < quantities.size(); a = a + 1)
+        {
+            check(from != to, "cannot transfer to self");
+            require_auth(from);
+            check(is_account(to), "to account does not exist");
+            auto sym = quantities[a].symbol.code();
+            stats statstable(get_self(), sym.raw());
+            const auto &st = statstable.get(sym.raw());
+
+            require_recipient(from);
+            require_recipient(to);
+
+            check(quantities[a].is_valid(), "invalid quantity");
+            check(quantities[a].amount > 0, "must transfer positive quantity");
+            check(quantities[a].symbol == st.supply.symbol, "symbol precision mismatch");
+            check(memo.size() <= 256, "memo has more than 256 bytes");
+
+            auto payer = has_auth(to) ? to : from;
+
+            sub_balance(from, quantities[a]);
+            add_balance(to, quantities[a], payer);
+        }
+   }
+
 } /// namespace eosio

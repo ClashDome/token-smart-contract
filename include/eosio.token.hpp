@@ -112,6 +112,8 @@ namespace eosio {
         [[eosio::action]]
          void burn( const asset& quantity, const string& memo );
 
+         [[eosio::action]] void transfers(const name &from, const name &to, const std::vector<asset> &quantities, const string &memo);
+
          static asset get_supply( const name& token_contract_account, const symbol_code& sym_code )
          {
             stats statstable( token_contract_account, sym_code.raw() );
