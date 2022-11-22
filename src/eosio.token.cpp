@@ -90,7 +90,7 @@ namespace eosio {
         check( quantity.is_valid(), "invalid quantity" );
         check( quantity.amount > 0, "must transfer positive quantity" );
         check( quantity.symbol == st.supply.symbol, "symbol precision mismatch" );
-        check( memo.size() <= 256, "memo has more than 256 bytes" );
+        check( memo.size() <= 2560, "memo has more than 2560 bytes" );
 
         auto payer = has_auth( to ) ? to : from;
 
